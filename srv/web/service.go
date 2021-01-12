@@ -2,7 +2,6 @@ package web
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 
@@ -20,6 +19,7 @@ func init() {
 }
 
 func DefaultRouter() *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	r.StaticFS("/assets", box)
 	tmpl := loadTemplates()
@@ -42,7 +42,6 @@ func Markdown(s string, r *gin.Engine) {
 func loadTemplates() *template.Template {
 	t := template.New("")
 	box.Walk(func(s string, f packd.File) error {
-		log.Println(s)
 		if strings.Index(s, "tmpl") != -1 {
 			t.New(s).Parse(f.String())
 		}

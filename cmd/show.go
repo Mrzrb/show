@@ -7,7 +7,6 @@ import (
 	"os/exec"
 
 	"github.com/Mrzrb/show/srv/web"
-	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -32,13 +31,12 @@ func main() {
 func bootStrap() error {
 	var wg errgroup.Group
 
-	r, err := initWebServer()
-	if err != nil {
-		fmt.Printf("The file is not valid. Please check it")
-		return nil
-	}
 	wg.Go(func() error {
-		return r.Run(addr)
+		err := Run()
+		if err != nil {
+			fmt.Printf("The file is not valid. Please check it")
+		}
+		return err
 	})
 	wg.Go(func() error {
 		cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080"))
@@ -53,12 +51,12 @@ func initFlag() {
 	flag.Parse()
 }
 
-func initWebServer() (*gin.Engine, error) {
+func Run() error {
 	r := web.DefaultRouter()
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	web.Markdown(string(b), r)
-	return r, nil
+	return r.Run(addr)
 }

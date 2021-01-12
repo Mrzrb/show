@@ -2,11 +2,12 @@
 	<head>
 		<link rel="stylesheet" href="/assets/css/reveal@4.1.0.css">
 		<link rel="stylesheet" href="/assets/css/themes/night@4.1.0.css">
+		<link rel="stylesheet" href="/assets/css/themes/zenburn@4.1.0.css">
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-            <section data-markdown data-separator="---" data-transition="convex" data-auto-animate>
+            <section data-markdown data-separator="---" data-transition="convex" data-auto-animate data-separator-notes="^Note:">
                     <script type="text/template">
                     {{.md}}
                     </script>
@@ -16,15 +17,17 @@
 		<script src="/assets/js/reveal@4.1.0.js"></script>
 		<script src="/assets/js/reveal-markdown@4.1.0.js"></script>
 		<script src="/assets/js/plugin/zoom@4.1.0.js"></script>
+		<script src="/assets/js/plugin/search@4.1.0.js"></script>
 		<script src="/assets/js/plugin/highlight@4.1.0.js"></script>
+		<script src="/assets/js/plugin/note@4.1.0.js"></script>
 		<script>
         Reveal.initialize({
-            plugins: [ RevealMarkdown ],
+            plugins: [ RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes ],
             markdown: {
                 smartypants: true
             }
-        }
-        );
+        });
+        console.log(Reveal.getPlugins())
 		</script>
 	</body>
 </html>

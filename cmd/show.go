@@ -19,7 +19,7 @@ func main() {
 }
 
 func initFlag() {
-	flag.StringVar(&file, "file", "", "set the markdown file to presentation")
+	flag.StringVar(&file, "f", "", "set the markdown file to presentation")
 	flag.Parse()
 }
 

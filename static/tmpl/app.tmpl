@@ -6,33 +6,11 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-            <section data-markdown data-transition="fade">
-              <textarea data-template>
-              ## Slide 1
-                A paragraph with some text and a [link](http://hakim.se).
-
-                  ```js [1-2|3|4]
-    let a = 1;
-    let b = 2;
-    let c = x => 1 + 2 + x;
-    c(3);
-    ```
-                ## Slide 2
-                ## Slide 3
-              </textarea>
-            </section>
-            <section data-markdown data-transition="convex" data-auto-animate>
-              <textarea data-template>
-              ## Slide 1
-                A paragraph with some text and a [link](http://hakim.se).
-                A paragraph with some text and a [link](http://hakim.se).
-                A paragraph with some text and a [link](http://hakim.se).
-                A paragraph with some text and a [link](http://hakim.se).
-              </textarea>
-            </section>
-            <section data-auto-animate>
-  <h1>Implicit</h1>
-</section>
+            <section data-markdown data-separator="---" data-transition="convex" data-auto-animate>
+                    <script type="text/template">
+                    {{.md}}
+                    </script>
+                </section>
 			</div>
 		</div>
 		<script src="/assets/js/reveal@4.1.0.js"></script>

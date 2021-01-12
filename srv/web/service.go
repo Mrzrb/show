@@ -3,19 +3,26 @@ package web
 import (
 	"net/http"
 
-	"github.com/Mrzrb/show/internal/files"
 	"github.com/gin-gonic/gin"
+	"github.com/gobuffalo/packr/v2"
 )
 
 func DefaultRouter() *gin.Engine {
 	r := gin.Default()
-	r.Static("/assets", "./static")
+	r.StaticFS("/assets", initStaticServer())
 	r.LoadHTMLFiles("./static/tmpl/app.tmpl")
+	return r
+}
+
+func initStaticServer() *packr.Box {
+	box := packr.NewBox("../../static")
+	return box
+}
+
+func Markdown(s string, r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
-		s, _ := files.GetStringFromFile("./examples/test.mdx")
 		c.HTML(http.StatusOK, "app.tmpl", map[string]string{
 			"md": s,
 		})
 	})
-	return r
 }

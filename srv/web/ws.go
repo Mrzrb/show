@@ -13,7 +13,7 @@ import (
 )
 
 type WsServer struct {
-	conn    *net.Conn
+	conns   map[*net.Conn]struct{}
 	config  *Config
 	handler map[string]MsgHandler
 }
@@ -75,6 +75,7 @@ func NewWsServer(c *Config, opt ...WsOptionFunc) *WsServer {
 	return &WsServer{
 		config:  c,
 		handler: make(map[string]MsgHandler),
+		conns:   make(map[*net.Conn]struct{}),
 	}
 }
 
@@ -112,13 +113,14 @@ func (s *WsServer) Run() error {
 			log.Printf("[warn] %s", "upgrade ws protocol failed")
 			return
 		}
+		s.conns[&conn] = struct{}{}
 		go func() {
+			defer delete(s.conns, &conn)
 			defer conn.Close()
 			for {
 				msg, op, err := wsutil.ReadClientData(conn)
 				if err != nil {
-					// handle error
-					continue
+					return
 				}
 				rest, err := s.OnMsg(msg)
 				if err != nil {
@@ -127,7 +129,6 @@ func (s *WsServer) Run() error {
 				}
 				err = wsutil.WriteServerMessage(conn, op, []byte(rest))
 				if err != nil {
-					// handle error
 					continue
 				}
 			}

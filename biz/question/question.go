@@ -31,11 +31,14 @@ func (qh *QuestionHandler) GetAllQuestions(msg *web.WsMessage) (*web.SuccessMsg,
 }
 
 func (qh *QuestionHandler) AddOneQuestion(msg *web.WsMessage) (*web.SuccessMsg, error) {
+	succObj := web.NewSuccessMsg()
 	cr := msg.Data.(map[string]interface{})
 	name := cr["name"].(string)
 	question := cr["question"].(string)
+	if name == "" && question == "" {
+		return succObj, nil
+	}
 	data.QuestionDB.Create(name, question)
-	succObj := web.NewSuccessMsg()
 	succObj.Data = cr
 	succObj.Action = "broadcast"
 	msg.Server.BroadcastCh <- succObj

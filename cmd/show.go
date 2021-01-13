@@ -6,14 +6,16 @@ import (
 	"io/ioutil"
 	"os/exec"
 
+	"github.com/Mrzrb/show/biz/question"
 	"github.com/Mrzrb/show/srv/web"
 	"golang.org/x/sync/errgroup"
 )
 
 var (
-	file        string
-	addr        string = "0.0.0.0:8080"
-	addrmonitor string = "0.0.0.0:8081"
+	file   string
+	addr   string = "0.0.0.0:8080"
+	wsAddr string = "0.0.0.0"
+	wsPort int    = 8081
 )
 
 func main() {
@@ -33,6 +35,13 @@ func bootStrap() error {
 
 	wg.Go(func() error {
 		err := Run()
+		if err != nil {
+			fmt.Printf("The file is not valid. Please check it")
+		}
+		return err
+	})
+	wg.Go(func() error {
+		err := RunWs()
 		if err != nil {
 			fmt.Printf("The file is not valid. Please check it")
 		}
@@ -59,4 +68,14 @@ func Run() error {
 	}
 	web.Markdown(string(b), r)
 	return r.Run(addr)
+}
+
+func RunWs() error {
+	config := &web.Config{
+		Addr: wsAddr,
+		Port: wsPort,
+	}
+	s := web.NewWsServer(config)
+	s.RegisterMsgHandler("askforit", question.Question.Accept)
+	return s.Run()
 }

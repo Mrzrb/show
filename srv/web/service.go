@@ -39,10 +39,16 @@ func Markdown(s string, r *gin.Engine) {
 	})
 }
 
+func Question(r *gin.Engine) {
+	r.GET("/question/*ask", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "tmpl/question.html", map[string]string{})
+	})
+}
+
 func loadTemplates() *template.Template {
 	t := template.New("")
 	box.Walk(func(s string, f packd.File) error {
-		if strings.Index(s, "tmpl") != -1 {
+		if strings.Index(s, "tmpl") != -1 || strings.Index(s, "html") != -1 {
 			t.New(s).Parse(f.String())
 		}
 		return nil

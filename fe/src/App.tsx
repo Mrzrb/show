@@ -1,7 +1,7 @@
 import React from "react";
 import Question from "./question/Question";
 import "antd/dist/antd.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Ask from "./ask/Ask";
 import { Layout } from "antd";
 const { Header, Content } = Layout;
@@ -13,7 +13,7 @@ function App() {
         <Layout>
           <Header></Header>
           <Content>
-            <Router>
+            <Router basename="/question">
               <Switch>
                 <Route path="/ask">
                   <Ask />

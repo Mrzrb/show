@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import QuestionCard, { QuestionCardProps } from "./QuestionCard";
 import { Card, Space } from "antd";
+import { Link } from "react-router-dom";
 
 export interface WsMsg {
   action: string;
@@ -77,6 +78,7 @@ const Question: React.FC<{}> = () => {
   const questionCard = questions?.questions.map((v) => {
     return (
       <Card>
+        <Link to="/ask">sdasd</Link>
         <QuestionCard name={v.name} question={v.question} />{" "}
       </Card>
     );

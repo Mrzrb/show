@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 
 	"github.com/Mrzrb/show/biz/question"
 	"github.com/Mrzrb/show/srv/web"
@@ -47,10 +46,10 @@ func bootStrap() error {
 		}
 		return err
 	})
-	wg.Go(func() error {
-		cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080"))
-		return cmd.Start()
-	})
+	//wg.Go(func() error {
+	//cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080"))
+	//return cmd.Start()
+	//})
 	wg.Wait()
 	return nil
 }

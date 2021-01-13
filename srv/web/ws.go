@@ -7,20 +7,24 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"sync"
 
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 )
 
 type WsServer struct {
-	conns   map[*net.Conn]struct{}
-	config  *Config
-	handler map[string]MsgHandler
+	conns       map[*net.Conn]struct{}
+	config      *Config
+	handler     map[string]MsgHandler
+	mu          sync.Mutex
+	BroadcastCh chan *SuccessMsg
 }
 
 type WsMessage struct {
-	Action string
-	Data   interface{}
+	Action string      `json:"action"`
+	Data   interface{} `json:"data"`
+	Server *WsServer
 }
 
 type Config struct {
@@ -45,15 +49,16 @@ type ErrorMsg struct {
 
 type SuccessMsg struct {
 	BaseResponse
+	Action string `json:"action"`
 }
 
 func NewSuccessMsg() *SuccessMsg {
-	return &SuccessMsg{
-		BaseResponse{
-			Status: 200,
-			Msg:    "success",
-		},
+	msg := &SuccessMsg{}
+	msg.BaseResponse = BaseResponse{
+		Status: 200,
+		Msg:    "success",
 	}
+	return msg
 }
 
 func ErrMsg(err error) string {
@@ -73,9 +78,10 @@ var (
 
 func NewWsServer(c *Config, opt ...WsOptionFunc) *WsServer {
 	return &WsServer{
-		config:  c,
-		handler: make(map[string]MsgHandler),
-		conns:   make(map[*net.Conn]struct{}),
+		config:      c,
+		handler:     make(map[string]MsgHandler),
+		conns:       make(map[*net.Conn]struct{}),
+		BroadcastCh: make(chan *SuccessMsg),
 	}
 }
 
@@ -90,6 +96,7 @@ func (s *WsServer) OnMsg(msg []byte) (string, WsErr) {
 	if err := json.Unmarshal(msg, &wsMsg); err != nil {
 		return "", err
 	}
+	wsMsg.Server = s
 	action := wsMsg.Action
 	h, ok := s.handler[action]
 	if !ok {
@@ -100,9 +107,26 @@ func (s *WsServer) OnMsg(msg []byte) (string, WsErr) {
 	if err != nil {
 		return "", err
 	}
-	rest, err := json.Marshal(succObj)
+	return s.convertSuccOb(succObj)
+}
 
+func (s *WsServer) convertSuccOb(obj *SuccessMsg) (string, error) {
+	rest, err := json.Marshal(obj)
 	return string(rest), err
+}
+
+func (s *WsServer) Broadcast() {
+	for msg := range s.BroadcastCh {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		for conn := range s.conns {
+			rest, _ := s.convertSuccOb(msg)
+			err := wsutil.WriteServerMessage(*conn, ws.OpBinary, []byte(rest))
+			if err != nil {
+				continue
+			}
+		}
+	}
 }
 
 func (s *WsServer) Run() error {
@@ -114,6 +138,7 @@ func (s *WsServer) Run() error {
 			return
 		}
 		s.conns[&conn] = struct{}{}
+		go s.Broadcast()
 		go func() {
 			defer delete(s.conns, &conn)
 			defer conn.Close()

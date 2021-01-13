@@ -26,6 +26,8 @@ func (qh *QuestionHandler) GetAllQuestions(msg *web.WsMessage) (*web.SuccessMsg,
 	}
 	succObj := web.NewSuccessMsg()
 	succObj.Data = qs
+	succObj.Action = "getall"
+	succObj.Broadcast = false
 	msg.Server.BroadcastCh <- succObj
 	return succObj, nil
 }
@@ -41,8 +43,7 @@ func (qh *QuestionHandler) AddOneQuestion(msg *web.WsMessage) (*web.SuccessMsg, 
 	data.QuestionDB.Create(name, question)
 	succObj.Data = cr
 	succObj.Action = "broadcast"
+	succObj.Broadcast = true
 	msg.Server.BroadcastCh <- succObj
 	return succObj, nil
 }
-
-//type MsgHandler func(*WsMessage) (SuccessMsg, error)

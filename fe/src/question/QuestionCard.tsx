@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, Avatar } from "antd";
-import { EditOutlined, LikeOutlined, SettingOutlined } from "@ant-design/icons";
+import { LikeOutlined, SettingOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 
-interface QuestionCardProps {
+export interface QuestionCardProps {
   name?: string;
   question?: string;
 }

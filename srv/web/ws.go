@@ -38,9 +38,10 @@ type MsgHandler func(*WsMessage) (*SuccessMsg, error)
 type WsErr error
 
 type BaseResponse struct {
-	Status int         `json:"status"`
-	Msg    string      `json:"msg"`
-	Data   interface{} `json:"data"`
+	Status    int         `json:"status"`
+	Msg       string      `json:"msg"`
+	Data      interface{} `json:"data"`
+	Broadcast bool        `json:"broadcast"`
 }
 
 type ErrorMsg struct {
@@ -55,8 +56,9 @@ type SuccessMsg struct {
 func NewSuccessMsg() *SuccessMsg {
 	msg := &SuccessMsg{}
 	msg.BaseResponse = BaseResponse{
-		Status: 200,
-		Msg:    "success",
+		Status:    200,
+		Msg:       "success",
+		Broadcast: false,
 	}
 	return msg
 }
@@ -104,7 +106,9 @@ func (s *WsServer) OnMsg(msg []byte) (string, WsErr) {
 	}
 	log.Printf("[request in : %s]:%+v", action, wsMsg.Data)
 	succObj, err := h(&wsMsg)
-	if err != nil {
+	log.Println(succObj.Broadcast)
+	if err != nil || succObj.Broadcast {
+		log.Println("do not send")
 		return "", err
 	}
 	return s.convertSuccOb(succObj)
@@ -117,15 +121,18 @@ func (s *WsServer) convertSuccOb(obj *SuccessMsg) (string, error) {
 
 func (s *WsServer) Broadcast() {
 	for msg := range s.BroadcastCh {
-		s.mu.Lock()
-		defer s.mu.Unlock()
-		for conn := range s.conns {
-			rest, _ := s.convertSuccOb(msg)
-			err := wsutil.WriteServerMessage(*conn, ws.OpBinary, []byte(rest))
-			if err != nil {
-				continue
+		msg := msg
+		go func() {
+			s.mu.Lock()
+			defer s.mu.Unlock()
+			for conn := range s.conns {
+				rest, _ := s.convertSuccOb(msg)
+				err := wsutil.WriteServerMessage(*conn, ws.OpBinary, []byte(rest))
+				if err != nil {
+					continue
+				}
 			}
-		}
+		}()
 	}
 }
 
@@ -140,7 +147,6 @@ func (s *WsServer) Run() error {
 		s.conns[&conn] = struct{}{}
 		go s.Broadcast()
 		go func() {
-			defer delete(s.conns, &conn)
 			defer conn.Close()
 			for {
 				msg, op, err := wsutil.ReadClientData(conn)

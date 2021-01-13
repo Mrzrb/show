@@ -7,6 +7,9 @@ require (
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/gobuffalo/packd v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.1
+	github.com/gobwas/httphead v0.1.0 // indirect
+	github.com/gobwas/pool v0.2.1 // indirect
+	github.com/gobwas/ws v1.0.4
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/googollee/go-socket.io v1.4.4
 	github.com/json-iterator/go v1.1.10 // indirect

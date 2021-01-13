@@ -75,7 +75,6 @@ func RunWs() error {
 		Port: wsPort,
 	}
 	s := web.NewWsServer(config)
-	s.RegisterMsgHandler("askforit", question.Question.Accept)
 	s.RegisterMsgHandler("getall", question.Question.GetAllQuestions)
 	s.RegisterMsgHandler("create", question.Question.AddOneQuestion)
 	return s.Run()

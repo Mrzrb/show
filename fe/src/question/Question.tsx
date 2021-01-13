@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Layout } from "antd";
 import QuestionCard, { QuestionCardProps } from "./QuestionCard";
+import { Card, Space } from "antd";
 
-const { Header, Content } = Layout;
-
-interface WsMsg {
+export interface WsMsg {
   action: string;
   status: string;
   msg: string;
@@ -20,7 +18,8 @@ const Question: React.FC<{}> = () => {
   const [questions, setQuestions] = useState<QuestionProps>();
 
   useEffect(() => {
-    const ws = new WebSocket("ws://127.0.0.1:8081");
+    const url = window.location;
+    const ws = new WebSocket(`ws://${url.hostname}:8081`);
     ws.onmessage = async (evt) => {
       const data: Blob = evt.data;
       const d: WsMsg = await handleBlobData(data);
@@ -76,15 +75,18 @@ const Question: React.FC<{}> = () => {
   }, []);
 
   const questionCard = questions?.questions.map((v) => {
-    return <QuestionCard name={v.name} question={v.question} />;
+    return (
+      <Card>
+        <QuestionCard name={v.name} question={v.question} />{" "}
+      </Card>
+    );
   });
 
   return (
     <>
-      <Layout>
-        <Header></Header>
-        <Content>{questionCard}</Content>
-      </Layout>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        {questionCard}
+      </Space>
     </>
   );
 };

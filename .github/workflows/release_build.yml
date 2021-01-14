@@ -24,7 +24,7 @@ jobs:
 
       - name: packr2
         run: |
-            PWD=`pwd` && cd /tmp  && go get -u github.com/gobuffalo/packr/v2/packr2 && cd ${PWD} && packr2 
+            P=`pwd` && cd /tmp  && go get -u github.com/gobuffalo/packr/v2/packr2 && cd ${P} && packr2 
         id: packr2
 
       - name: Run GoReleaser

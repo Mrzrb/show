@@ -8,13 +8,16 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-            <section data-markdown data-separator="---" data-transition="convex" data-auto-animate data-separator-notes="^Note:">
-                    <script type="text/template">
-                    {{.md}}
-                    </script>
+                <section data-markdown data-trim 
+                    data-noescape data-separator="---" data-transition="convex"
+                    data-auto-animate data-separator-notes="^Note:"
+                    data-separator-vertical="\|\|\|">
+                        <script type="text/template" data-trim data-noescape>
+                        {{.md}}
+                        </script>
                 </section>
-			</div>
-		</div>
+            </div>
+        </div>
 		<script src="/assets/js/reveal@4.1.0.js"></script>
 		<script src="/assets/js/notify/notify.js"></script>
 		<script src="/assets/js/reveal-markdown@4.1.0.js"></script>
@@ -25,6 +28,8 @@
 		<script>
         Reveal.initialize({
             plugins: [ RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes ],
+            slideNumber: true,
+            center: true,
             markdown: {
                 smartypants: true
             }

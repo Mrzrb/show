@@ -15,11 +15,25 @@ interface QuestionProps {
 }
 
 const Question: React.FC<{}> = () => {
+  const url = window.location;
+  const ws = new WebSocket(`ws://${url.hostname}:8081`);
   const [questions, setQuestions] = useState<QuestionProps>();
 
+  function showQuestion(name: string, question: string) {
+    const showReq = {
+      action: "show",
+      data: {
+        name: name,
+        question: question,
+      },
+    };
+    if (ws.readyState != ws.OPEN) {
+      return;
+    }
+    ws.send(JSON.stringify(showReq));
+  }
+
   useEffect(() => {
-    const url = window.location;
-    const ws = new WebSocket(`ws://${url.hostname}:8081`);
     ws.onmessage = async (evt) => {
       const data: Blob = evt.data;
       const d: WsMsg = await handleBlobData(data);
@@ -77,7 +91,11 @@ const Question: React.FC<{}> = () => {
   const questionCard = questions?.questions.map((v) => {
     return (
       <Card>
-        <QuestionCard name={v.name} question={v.question} />{" "}
+        <QuestionCard
+          name={v.name}
+          question={v.question}
+          onShow={showQuestion}
+        />{" "}
       </Card>
     );
   });

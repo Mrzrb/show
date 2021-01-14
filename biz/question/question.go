@@ -47,3 +47,18 @@ func (qh *QuestionHandler) AddOneQuestion(msg *web.WsMessage) (*web.SuccessMsg, 
 	msg.Server.BroadcastCh <- succObj
 	return succObj, nil
 }
+
+func (qh *QuestionHandler) Show(msg *web.WsMessage) (*web.SuccessMsg, error) {
+	succObj := web.NewSuccessMsg()
+	cr := msg.Data.(map[string]interface{})
+	name := cr["name"].(string)
+	question := cr["question"].(string)
+	if name == "" && question == "" {
+		return succObj, nil
+	}
+	succObj.Data = cr
+	succObj.Action = "show"
+	succObj.Broadcast = true
+	msg.Server.BroadcastCh <- succObj
+	return succObj, nil
+}

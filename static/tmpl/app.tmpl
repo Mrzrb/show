@@ -2,6 +2,7 @@
 	<head>
 		<link rel="stylesheet" href="/assets/css/reveal@4.1.0.css">
 		<link rel="stylesheet" href="/assets/css/notify.css">
+		<link rel="stylesheet" href="/assets/css/tingle.css">
 		<link rel="stylesheet" href="/assets/css/themes/moon@4.1.0.css">
 		<link rel="stylesheet" href="/assets/css/themes/zenburn@4.1.0.css">
 	</head>
@@ -12,13 +13,14 @@
                     data-noescape data-separator="^\^--" data-transition="convex"
                     data-auto-animate data-separator-notes="^Note:"
                     data-separator-vertical="^\^\|\|">
-                        <script type="text/template" data-trim data-noescape>
+                        <script type="text/template" >
                         {{.md}}
                         </script>
                 </section>
             </div>
         </div>
 		<script src="/assets/js/reveal@4.1.0.js"></script>
+		<script src="/assets/js/tingle.js"></script>
 		<script src="/assets/js/notify/notify.js"></script>
 		<script src="/assets/js/reveal-markdown@4.1.0.js"></script>
 		<script src="/assets/js/plugin/zoom@4.1.0.js"></script>
@@ -34,11 +36,31 @@
                 smartypants: true
             }
         });
+        var modalTinyNoFooter = new tingle.modal({
+            onClose: function() {
+                console.log('close');
+            },
+            onOpen: function() {
+                console.log('open');
+            },
+            beforeOpen: function() {
+                console.log('before open');
+            },
+            beforeClose: function() {
+                console.log('before close');
+                return true;
+            },
+            cssClass: ['class1', 'class2']
+        });
 
     const actionList = {
       broadcast: (v) => {
           Notiflix.Notify.Success(`${v.data.name}提问了: ${v.data.question}`);
       },
+      show: (v) => {
+        modalTinyNoFooter.setContent(`${v.data.name}的问题: ${v.data.question}`) 
+        modalTinyNoFooter.open()
+      }
     };
     const handleBlobData = async (b) => {
       if (b.text) {

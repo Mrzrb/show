@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/assets/question/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/assets/question/static/js/main.fd17daec.chunk.js",
+    "main.js.map": "/assets/question/static/js/main.fd17daec.chunk.js.map",
+    "runtime-main.js": "/assets/question/static/js/runtime-main.54e8afbd.js",
+    "runtime-main.js.map": "/assets/question/static/js/runtime-main.54e8afbd.js.map",
+    "static/css/2.b544de60.chunk.css": "/assets/question/static/css/2.b544de60.chunk.css",
+    "static/js/2.3fc3743d.chunk.js": "/assets/question/static/js/2.3fc3743d.chunk.js",
+    "static/js/2.3fc3743d.chunk.js.map": "/assets/question/static/js/2.3fc3743d.chunk.js.map",
+    "static/js/3.69834b2f.chunk.js": "/assets/question/static/js/3.69834b2f.chunk.js",
+    "static/js/3.69834b2f.chunk.js.map": "/assets/question/static/js/3.69834b2f.chunk.js.map",
+    "index.html": "/assets/question/index.html",
+    "static/css/2.b544de60.chunk.css.map": "/assets/question/static/css/2.b544de60.chunk.css.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/assets/question/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.3fc3743d.chunk.js.LICENSE.txt": "/assets/question/static/js/2.3fc3743d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.54e8afbd.js",
+    "static/css/2.b544de60.chunk.css",
+    "static/js/2.3fc3743d.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.fd17daec.chunk.js"
+  ]
+}

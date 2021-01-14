@@ -66,6 +66,7 @@ func Run() error {
 		return err
 	}
 	web.Markdown(string(b), r)
+	web.Question(r)
 	return r.Run(addr)
 }
 

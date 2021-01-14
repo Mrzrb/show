@@ -1,17 +1,17 @@
-<html>
+<!DOCTYPE html>
 	<head>
 		<link rel="stylesheet" href="/assets/css/reveal@4.1.0.css">
 		<link rel="stylesheet" href="/assets/css/notify.css">
-		<link rel="stylesheet" href="/assets/css/themes/night@4.1.0.css">
+		<link rel="stylesheet" href="/assets/css/themes/moon@4.1.0.css">
 		<link rel="stylesheet" href="/assets/css/themes/zenburn@4.1.0.css">
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
                 <section data-markdown data-trim 
-                    data-noescape data-separator="---" data-transition="convex"
+                    data-noescape data-separator="^\^--" data-transition="convex"
                     data-auto-animate data-separator-notes="^Note:"
-                    data-separator-vertical="\|\|\|">
+                    data-separator-vertical="^\^\|\|">
                         <script type="text/template" data-trim data-noescape>
                         {{.md}}
                         </script>
@@ -29,7 +29,7 @@
         Reveal.initialize({
             plugins: [ RevealMarkdown, RevealHighlight, RevealSearch, RevealNotes ],
             slideNumber: true,
-            center: true,
+            center: false,
             markdown: {
                 smartypants: true
             }

@@ -1,4 +1,4 @@
-game: Release Go project
+name: Release Go project
 
 on:
   push:

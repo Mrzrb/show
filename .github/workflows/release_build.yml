@@ -27,7 +27,7 @@ jobs:
             go get -u github.com/gobuffalo/packr/v2/packr2 &&  packr2 && go build -o show cmd/show.go
         id: build
 
-     - uses: marvinpinto/action-automatic-releases@latest
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
           automatic_release_tag: "latest"

@@ -24,7 +24,7 @@ jobs:
 
       - name: packr2
         run: |
-            go get -u github.com/gobuffalo/packr/v2/packr2 && packr2
+            cp go.mod go.mod_bak && cp go.sum go.sum_bak && go get -u github.com/gobuffalo/packr/v2/packr2 && packr2 && cp go.mod_bak go.mod && cp go.sum_bak go.sum
         id: packr2
 
       - name: Run GoReleaser

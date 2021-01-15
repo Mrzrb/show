@@ -25,7 +25,7 @@ A library for presentation on web ☕
 
 Create a markdown file, for example `test.md`:
 
-    ```mdx
+````mdx
 # Title 这是
 
     * Point 1
@@ -43,7 +43,7 @@ Create a markdown file, for example `test.md`:
     | You Can Also   | Put Pipes In | Like this \| |
 
     Note: speaker notes FTW!
-    ```
+````
 
 Then run it:
     

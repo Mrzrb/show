@@ -50,7 +50,7 @@ func bootStrap() error {
 		return err
 	})
 	wg.Go(func() error {
-		cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080"))
+		cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s:%d", GetLocalIP(), 8080))
 		cmd.Start()
 		cmd = exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080/question"))
 		cmd.Start()

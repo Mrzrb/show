@@ -25,7 +25,7 @@ A library for presentation on web ☕
 
 Create a markdown file, for example `test.md`:
 
-    ```markdown
+    ```mdx
 # Title 这是
 
     * Point 1

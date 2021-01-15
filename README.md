@@ -19,9 +19,9 @@ A library for presentation on web ☕
 
 ## Getting Started
 
-    ```sh
-        go get -u github.com/Mrzrb/show/cmd/show
-    ```
+```sh
+  go get -u github.com/Mrzrb/show/cmd/show
+```
 
 Create a markdown file, for example `test.md`:
 

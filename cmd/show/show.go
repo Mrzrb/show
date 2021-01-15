@@ -38,14 +38,14 @@ func bootStrap() error {
 	wg.Go(func() error {
 		err := Run()
 		if err != nil {
-			fmt.Printf("The file is not valid. Please check it")
+			fmt.Printf("error detected %s", err.Error())
 		}
 		return err
 	})
 	wg.Go(func() error {
 		err := RunWs()
 		if err != nil {
-			fmt.Printf("The file is not valid. Please check it")
+			fmt.Printf("error detected %s", err.Error())
 		}
 		return err
 	})

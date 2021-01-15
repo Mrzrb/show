@@ -33,8 +33,8 @@ func initStaticServer() {
 
 func Markdown(s string, r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "tmpl/app.tmpl", map[string]string{
-			"md": s,
+		c.HTML(http.StatusOK, "tmpl/app.tmpl", map[string]template.HTML{
+			"md": template.HTML(s),
 		})
 	})
 }

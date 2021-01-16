@@ -52,7 +52,7 @@ func bootStrap() error {
 	wg.Go(func() error {
 		cmd := exec.Command("/usr/bin/open", fmt.Sprintf("http://%s:%d", GetLocalIP(), 8080))
 		cmd.Start()
-		cmd = exec.Command("/usr/bin/open", fmt.Sprintf("http://%s", "localhost:8080/question"))
+		cmd = exec.Command("/usr/bin/open", fmt.Sprintf("http://%s:%d/question", GetLocalIP(), 8080))
 		cmd.Start()
 		log.Printf("You ask url is : http://%s:8080/question/ask", GetLocalIP())
 		return cmd.Start()
@@ -103,5 +103,6 @@ func RunWs() error {
 	s.RegisterMsgHandler("getall", question.Question.GetAllQuestions)
 	s.RegisterMsgHandler("create", question.Question.AddOneQuestion)
 	s.RegisterMsgHandler("show", question.Question.Show)
+	s.RegisterMsgHandler("control", question.Question.Control)
 	return s.Run()
 }

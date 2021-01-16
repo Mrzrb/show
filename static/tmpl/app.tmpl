@@ -60,7 +60,19 @@
       show: (v) => {
         modalTinyNoFooter.setContent(`${v.data.name}的问题: ${v.data.question}`) 
         modalTinyNoFooter.open()
-      }
+      },
+        p_left: (v) => {
+            Reveal.left()
+        },
+        p_right: (v) => {
+            Reveal.right()
+        },
+        p_up: (v) => {
+            Reveal.up()
+        },
+        p_down: (v) => {
+            Reveal.down()
+        }
     };
     const handleBlobData = async (b) => {
       if (b.text) {

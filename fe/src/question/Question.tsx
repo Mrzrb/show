@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import QuestionCard, { QuestionCardProps } from "./QuestionCard";
-import { Card, Space } from "antd";
+import { Card, Space, Button } from "antd";
+import {
+  UpOutlined,
+  DownOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 
 export interface WsMsg {
   action: string;
@@ -13,6 +19,19 @@ export interface WsMsg {
 interface QuestionProps {
   questions: QuestionCardProps[];
 }
+
+const control = (action: string, ws: WebSocket) => {
+  const actionMsg = {
+    action: "control",
+    data: {
+      control: action,
+    },
+  };
+  if (ws.readyState !== ws.OPEN) {
+    return;
+  }
+  ws.send(JSON.stringify(actionMsg));
+};
 
 const Question: React.FC<{}> = () => {
   const url = window.location;
@@ -27,7 +46,7 @@ const Question: React.FC<{}> = () => {
         question: question,
       },
     };
-    if (ws.readyState != ws.OPEN) {
+    if (ws.readyState !== ws.OPEN) {
       return;
     }
     ws.send(JSON.stringify(showReq));
@@ -90,18 +109,53 @@ const Question: React.FC<{}> = () => {
 
   const questionCard = questions?.questions.map((v) => {
     return (
-      <Card>
-        <QuestionCard
-          name={v.name}
-          question={v.question}
-          onShow={showQuestion}
-        />{" "}
-      </Card>
+      <>
+        <Card>
+          <QuestionCard
+            name={v.name}
+            question={v.question}
+            onShow={showQuestion}
+          />{" "}
+        </Card>
+      </>
     );
   });
 
   return (
     <>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<UpOutlined />}
+        onClick={() => {
+          control("p_up", ws);
+        }}
+      ></Button>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<DownOutlined />}
+        onClick={() => {
+          control("p_down", ws);
+        }}
+      ></Button>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<LeftOutlined />}
+        onClick={() => {
+          control("p_left", ws);
+        }}
+      ></Button>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<RightOutlined />}
+        onClick={() => {
+          control("p_right", ws);
+        }}
+      ></Button>
+
       <Space direction="vertical" style={{ width: "100%" }}>
         {questionCard}
       </Space>

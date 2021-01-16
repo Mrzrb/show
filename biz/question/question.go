@@ -62,3 +62,17 @@ func (qh *QuestionHandler) Show(msg *web.WsMessage) (*web.SuccessMsg, error) {
 	msg.Server.BroadcastCh <- succObj
 	return succObj, nil
 }
+
+func (qh *QuestionHandler) Control(msg *web.WsMessage) (*web.SuccessMsg, error) {
+	succObj := web.NewSuccessMsg()
+	cr := msg.Data.(map[string]interface{})
+	action := cr["control"].(string)
+	if action == "" {
+		return succObj, nil
+	}
+	succObj.Data = cr
+	succObj.Action = action
+	succObj.Broadcast = true
+	msg.Server.BroadcastCh <- succObj
+	return succObj, nil
+}

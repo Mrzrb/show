@@ -59,3 +59,17 @@ Now you have:
 
 
 ## Examples
+
+### Presentation Mode
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116232943.png)
+
+### Speaker Mode
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116233049.png)
+
+### Realtime Ask Question
+
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116233307.png)
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116233240.png)
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116233323.png)
+> Tips: You can hint Like icon to show question On Presentation Mode
+![](http://zhangrb-image.oss-cn-beijing.aliyuncs.com/image/20210116233407.png)

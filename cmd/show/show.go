@@ -10,15 +10,18 @@ import (
 
 	"github.com/Mrzrb/show/biz/question"
 	"github.com/Mrzrb/show/srv/web"
+	"github.com/fsnotify/fsnotify"
 	"golang.org/x/sync/errgroup"
 )
 
 var (
-	file   string
-	theme  string
-	addr   string = "0.0.0.0:8080"
-	wsAddr string = "0.0.0.0"
-	wsPort int    = 8081
+	file      string
+	contentCh chan string = make(chan string)
+	theme     string
+	addr      string = "0.0.0.0:8080"
+	wsAddr    string = "0.0.0.0"
+	wsPort    int    = 8081
+	reloadCh         = make(chan struct{})
 )
 
 func main() {
@@ -42,6 +45,9 @@ func bootStrap() error {
 			fmt.Printf("error detected %s", err.Error())
 		}
 		return err
+	})
+	wg.Go(func() error {
+		return WatchFile(file)
 	})
 	wg.Go(func() error {
 		err := RunWs()
@@ -87,11 +93,11 @@ func initFlag() {
 
 func Run() error {
 	r := web.DefaultRouter()
-	b, err := ioutil.ReadFile(file)
-	if err != nil {
-		return err
-	}
-	web.Markdown(string(b), theme, r)
+	go func() {
+		for content := range contentCh {
+			web.Markdown(content, theme)
+		}
+	}()
 	web.Question(r)
 	return r.Run(addr)
 }
@@ -106,5 +112,54 @@ func RunWs() error {
 	s.RegisterMsgHandler("create", question.Question.AddOneQuestion)
 	s.RegisterMsgHandler("show", question.Question.Show)
 	s.RegisterMsgHandler("control", question.Question.Control)
+	go func() {
+		for range reloadCh {
+			s.BroadcastRefresh()
+		}
+	}()
 	return s.Run()
+}
+
+func WatchFile(f string) error {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Printf("[warn] hot reload failed")
+	}
+	b, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+	contentCh <- string(b)
+	defer watcher.Close()
+	done := make(chan bool)
+	go func() {
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+				if event.Op&fsnotify.Write == fsnotify.Write {
+					log.Println("modified file:", event.Name)
+					b, err := ioutil.ReadFile(file)
+					if err != nil {
+						return
+					}
+					contentCh <- string(b)
+					reloadCh <- struct{}{}
+				}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				log.Println("error:", err)
+			}
+		}
+	}()
+	err = watcher.Add(f)
+	if err != nil {
+		return err
+	}
+	<-done
+	return nil
 }

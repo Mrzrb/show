@@ -119,6 +119,13 @@ func (s *WsServer) convertSuccOb(obj *SuccessMsg) (string, error) {
 	return string(rest), err
 }
 
+func (s *WsServer) BroadcastRefresh() {
+	msg := &SuccessMsg{}
+	msg.Action = "refresh"
+	msg.Broadcast = true
+	s.BroadcastCh <- msg
+}
+
 func (s *WsServer) Broadcast() {
 	for msg := range s.BroadcastCh {
 		msg := msg

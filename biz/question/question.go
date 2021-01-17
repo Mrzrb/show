@@ -76,3 +76,11 @@ func (qh *QuestionHandler) Control(msg *web.WsMessage) (*web.SuccessMsg, error) 
 	msg.Server.BroadcastCh <- succObj
 	return succObj, nil
 }
+
+func (qh *QuestionHandler) Refresh(msg *web.WsMessage) (*web.SuccessMsg, error) {
+	succObj := web.NewSuccessMsg()
+	succObj.Action = "refresh"
+	succObj.Broadcast = true
+	msg.Server.BroadcastCh <- succObj
+	return succObj, nil
+}

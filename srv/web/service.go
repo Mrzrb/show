@@ -11,7 +11,9 @@ import (
 )
 
 var (
-	box *packr.Box
+	box     *packr.Box
+	content string
+	theme   string
 )
 
 func init() {
@@ -24,6 +26,12 @@ func DefaultRouter() *gin.Engine {
 	r.StaticFS("/assets", box)
 	tmpl := loadTemplates()
 	r.SetHTMLTemplate(tmpl)
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "tmpl/app.tmpl", map[string]template.HTML{
+			"md":    template.HTML(content),
+			"theme": template.HTML(theme),
+		})
+	})
 	return r
 }
 
@@ -31,13 +39,9 @@ func initStaticServer() {
 	box = packr.New("box", "../../static")
 }
 
-func Markdown(s string, theme string, r *gin.Engine) {
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "tmpl/app.tmpl", map[string]template.HTML{
-			"md":    template.HTML(s),
-			"theme": template.HTML(theme),
-		})
-	})
+func Markdown(s string, t string) {
+	content = s
+	theme = t
 }
 
 func Question(r *gin.Engine) {

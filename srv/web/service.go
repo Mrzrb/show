@@ -31,10 +31,11 @@ func initStaticServer() {
 	box = packr.New("box", "../../static")
 }
 
-func Markdown(s string, r *gin.Engine) {
+func Markdown(s string, theme string, r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "tmpl/app.tmpl", map[string]template.HTML{
-			"md": template.HTML(s),
+			"md":    template.HTML(s),
+			"theme": template.HTML(theme),
 		})
 	})
 }

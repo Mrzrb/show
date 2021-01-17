@@ -15,6 +15,7 @@ import (
 
 var (
 	file   string
+	theme  string
 	addr   string = "0.0.0.0:8080"
 	wsAddr string = "0.0.0.0"
 	wsPort int    = 8081
@@ -80,6 +81,7 @@ func GetLocalIP() string {
 
 func initFlag() {
 	flag.StringVar(&file, "f", "", "set the markdown file to presentation")
+	flag.StringVar(&theme, "t", "simple", "Theme of presentation, avalible options are black, moon, night, simple, zenburn")
 	flag.Parse()
 }
 
@@ -89,7 +91,7 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	web.Markdown(string(b), r)
+	web.Markdown(string(b), theme, r)
 	web.Question(r)
 	return r.Run(addr)
 }

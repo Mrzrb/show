@@ -17,7 +17,7 @@ body {
 
 .reveal {
   font-family: "Roboto", sans-serif;
-  font-size: 3rem;
+  font-size: 1.8rem;
   font-weight: 300;
   color: #444;
 }
@@ -47,7 +47,7 @@ body {
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  margin: 0 0 2.5rem 0;
+  margin: 1.5rem 0 1.5rem 0;
   color: #444;
   font-family: "Roboto Slab", serif;
   font-weight: normal;
@@ -68,7 +68,7 @@ body {
 }
 
 .reveal h1 {
-  font-size: 4rem;
+  font-size: 3.5rem;
 }
 
 .reveal h2 {
@@ -76,7 +76,7 @@ body {
 }
 
 .reveal h3 {
-  font-size: 2.5rem;
+  font-size: 2.3.5rem;
 }
 
 .reveal h4 {

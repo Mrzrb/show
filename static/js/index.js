@@ -1,14 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     init()
+    zoomable("img")
+})
+
+function zoomable(tag) {
     setTimeout(() => {
-        var imgs = document.getElementsByTagName("img")
+        var imgs = document.getElementsByTagName(tag)
         for(i=0; i< imgs.length; i++){
             imgs[i].onclick = (item) => {
                 showImage(item.target.src)
             }
         }
     }, 1000)
-})
+}
 
 function showImage(src) {
     var gallery = [{
@@ -19,8 +23,8 @@ function showImage(src) {
     Spotlight.show(gallery, {
         index: 1,
         theme: "black",
-        autohide: false,
-        control: ["autofit", "zoom"]
+        autohide: true,
+        control: ["zoom"]
     });
 }
 
